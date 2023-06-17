@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "442808137136",
+    "project_id": "integrity-api-poc-390116",
+    "storage_bucket": "integrity-api-poc-390116.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:442808137136:android:a95fdc8e6c74f4e58c1275",
+        "android_client_info": {
+          "package_name": "com.kurantsov.integritycheck"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "442808137136-4eer7d1t626ifrvbne90m7c15j4f56u6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.kurantsov.integritycheck",
+            "certificate_hash": "4bf1b6840be3d37a75ce2e983412433c36e7e216"
+          }
+        },
+        {
+          "client_id": "442808137136-fuaph2labpcoo6iosp9uak8f5mqjk2bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA67njI-zrCiwrFBsOM5uFBfAvpdp_bq0c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "442808137136-fuaph2labpcoo6iosp9uak8f5mqjk2bi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
