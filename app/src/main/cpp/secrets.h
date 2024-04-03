@@ -1,9 +1,6 @@
 #include "jni.h"
 #include <string>
 
-#define API_KEY "SECRET_API_KEY"
-#define API_KEY_LENGTH strlen(API_KEY)
-
 void getApiKey(char* buffer);
 
 extern "C" JNIEXPORT jstring JNICALL

@@ -24,6 +24,23 @@ android {
         }
         buildConfigField("String", "API_KEY", "\"SECRET_API_KEY\"")
         resValue("string", "api_key", "\"SECRET_API_KEY\"")
+
+        val xorValue = 0xAA
+        val API_KEY = "SECRET_API_KEY"
+        val apiKeyBytes = API_KEY.toByteArray().map {
+            it.toInt() xor xorValue
+        }
+        val apiKeyDefinitionString =
+            apiKeyBytes.joinToString(prefix = "[${apiKeyBytes.size}]{", postfix = "}")
+        externalNativeBuild {
+            cmake {
+                cppFlags(
+                    "-DAPI_KEY_LENGTH=${apiKeyBytes.size}",
+                    "-DAPI_KEY_BYTES_DEFINITION=\"$apiKeyDefinitionString\"",
+                    "-DXOR_VALUE=\\$xorValue",
+                )
+            }
+        }
     }
 
     buildTypes {
