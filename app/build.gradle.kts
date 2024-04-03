@@ -42,11 +42,29 @@ android {
             }
         }
     }
+    signingConfigs {
+        create("release") {
+            storeFile = file("$rootDir/integrity_check.keystore")
+            storePassword = "IntegrityCheck"
+            keyAlias = "android"
+            keyPassword = "IntegrityCheck"
+        }
+    }
 
     buildTypes {
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            isMinifyEnabled = true
+            isShrinkResources = true
+            proguardFiles.addAll(
+                files(
+                    getDefaultProguardFile("proguard-android-optimize.txt"),
+                    "proguard-rules.pro"
+                )
+            )
+            signingConfig = signingConfigs["release"]
+        }
+        debug {
+            signingConfig = signingConfigs["release"]
         }
     }
     compileOptions {
@@ -106,6 +124,13 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+
+    val ktorVersion = "2.3.1"
+    implementation("io.ktor:ktor-client-core:$ktorVersion")
+    implementation("io.ktor:ktor-client-cio:$ktorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
+
 }
 
 kapt {

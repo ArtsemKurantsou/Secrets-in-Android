@@ -32,9 +32,10 @@ internal interface SecretsModule {
         @Provides
         fun provideRetrofit(): Retrofit {
             return Retrofit.Builder()
-                .baseUrl("192.168.0.177:8081")
+                .baseUrl("https://192.168.0.177:8443")
                 .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-                .client(OkHttpClient())
+                .client(OkHttpClient.Builder()
+                    .build())
                 .build()
         }
 

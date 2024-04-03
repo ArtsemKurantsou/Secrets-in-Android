@@ -64,11 +64,16 @@ private fun MainContent(
 ) {
     when (state) {
         is MainViewModel.State.Error -> {
-            Text(
-                text = "Error loading secrets, error message - ${state.message}",
-                color = MaterialTheme.colorScheme.error,
-                style = MaterialTheme.typography.bodyLarge,
-            )
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                Text(
+                    text = "Error loading secrets, error message - ${state.message}",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyLarge,
+                )
+                Button(onClick = onLoad, modifier = Modifier.fillMaxWidth()) {
+                    Text(text = "Retry")
+                }
+            }
         }
 
         MainViewModel.State.Loading -> {
