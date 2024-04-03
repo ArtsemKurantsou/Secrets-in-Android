@@ -51,6 +51,11 @@ android {
     kotlin {
         jvmToolchain(17)
     }
+    externalNativeBuild {
+        cmake {
+            path = file("CMakeLists.txt")
+        }
+    }
 }
 
 dependencies {
