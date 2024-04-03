@@ -13,4 +13,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "Integrity Check PoC"
-include ':app'
+include(":app")
