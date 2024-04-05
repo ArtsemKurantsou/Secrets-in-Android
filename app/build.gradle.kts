@@ -37,7 +37,7 @@ android {
                 cppFlags(
                     "-DAPI_KEY_LENGTH=${apiKeyBytes.size}",
                     "-DAPI_KEY_BYTES_DEFINITION=\"$apiKeyDefinitionString\"",
-                    "-DXOR_VALUE=\\$xorValue",
+                    "-DXOR_VALUE=$xorValue",
                 )
             }
         }

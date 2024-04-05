@@ -20,6 +20,7 @@ class IntegrityCheckApp : Application() {
         Log.e("TEST", "Static field: $API_KEY")
         Log.e("TEST", "BuildConfig field: ${BuildConfig.API_KEY}")
         Log.e("TEST", "Res field: ${getString(R.string.api_key)}")
+        Log.e("TEST", "Field from native: ${NativeSecrets.getApiKeyFromNative()}")
     }
 
     companion object {
