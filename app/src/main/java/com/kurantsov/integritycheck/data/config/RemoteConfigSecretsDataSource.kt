@@ -34,10 +34,15 @@ internal class RemoteConfigSecretsDataSource @Inject constructor(
 
     private suspend fun ensureConfigFetched() {
         configurationTask.await()
+        // Checks if remote configuration is fresh enough
         if (remoteConfig.info.lastFetchStatus == FirebaseRemoteConfig.LAST_FETCH_STATUS_NO_FETCH_YET
             || (System.currentTimeMillis() - remoteConfig.info.fetchTimeMillis).milliseconds >= FETCH_INTERVAL
         ) {
+            // Fetches and activates latest values
             remoteConfig.fetchAndActivate().await()
+        } else {
+            // Activates current cached values
+            remoteConfig.activate()
         }
     }
 
