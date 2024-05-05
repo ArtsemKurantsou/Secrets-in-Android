@@ -1,5 +1,5 @@
 package com.kurantsov.integritycheck.domain
 
 interface SecretsRepository {
-    suspend fun getSecrets(): Secrets
+    suspend fun getSecrets(sourceType: SecretsSourceType): Secrets
 }

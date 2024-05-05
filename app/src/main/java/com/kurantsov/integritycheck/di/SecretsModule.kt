@@ -1,21 +1,23 @@
 package com.kurantsov.integritycheck.di
 
 import com.google.firebase.appcheck.FirebaseAppCheck
-import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.kurantsov.integritycheck.BuildConfig
 import com.kurantsov.integritycheck.data.RemoteSecretsDataSource
 import com.kurantsov.integritycheck.data.SecretsRepositoryImpl
-import com.kurantsov.integritycheck.data.remote.RemoteSecretsDataSourceImpl
-import com.kurantsov.integritycheck.data.remote.SecretsApi
+import com.kurantsov.integritycheck.data.config.RemoteConfigSecretsDataSource
+import com.kurantsov.integritycheck.data.remote.BackendSecretsDataSource
 import com.kurantsov.integritycheck.domain.SecretsRepository
 import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.serialization.json.Json
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.defaultRequest
+import io.ktor.serialization.kotlinx.json.json
 import javax.inject.Singleton
 
 @Module
@@ -26,27 +28,36 @@ internal interface SecretsModule {
     fun bindRepository(impl: SecretsRepositoryImpl): SecretsRepository
 
     @Binds
-    fun bindRemoteDataSource(impl: RemoteSecretsDataSourceImpl): RemoteSecretsDataSource
+    @BackendDataSource
+    fun bindBackendDataSource(impl: BackendSecretsDataSource): RemoteSecretsDataSource
+
+    @Binds
+    @RemoteConfigDataSource
+    fun bindRemoteConfigDataSource(impl: RemoteConfigSecretsDataSource): RemoteSecretsDataSource
 
     companion object {
         @Provides
-        fun provideRetrofit(): Retrofit {
-            return Retrofit.Builder()
-                .baseUrl("https://192.168.0.177:8443")
-                .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-                .client(OkHttpClient.Builder()
-                    .build())
-                .build()
-        }
-
-        @Provides
-        fun provideSecretsApi(retrofit: Retrofit): SecretsApi {
-            return retrofit.create(SecretsApi::class.java)
+        @Singleton
+        fun provideHttpClient(): HttpClient {
+            return HttpClient(Android) {
+                defaultRequest {
+                    url("http://${BuildConfig.BUILD_MACHINE_IP}:8080")
+                }
+                expectSuccess = true
+                install(ContentNegotiation) {
+                    json()
+                }
+            }
         }
 
         @Provides
         fun provideAppCheck(): FirebaseAppCheck {
             return FirebaseAppCheck.getInstance()
+        }
+
+        @Provides
+        fun provideRemoteConfig(): FirebaseRemoteConfig {
+            return FirebaseRemoteConfig.getInstance()
         }
     }
 }
